@@ -26,7 +26,7 @@ export default function Navbar() {
         <div className="flex justify-between h-20">
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-3 group">
-              <img src="/logo.png" alt="MB Tractors Logo" className="h-16 md:h-20 w-auto object-contain transition-transform group-hover:scale-105" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="MB Tractors Logo" className="h-16 md:h-20 w-auto object-contain transition-transform group-hover:scale-105" />
               <div className="flex flex-col leading-tight">
                 <span className="text-xl md:text-2xl font-black text-forest-green-dark tracking-tighter">MB TRACTORS</span>
                 <span className="text-[10px] md:text-xs font-bold text-saffron-gold uppercase tracking-[0.2em] whitespace-nowrap">Powered By MB Finance</span>

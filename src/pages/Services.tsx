@@ -4,27 +4,27 @@ export default function Services() {
   const services = [
     { 
       title: 'Buy Old Tractor', 
-      image: '/images/services/buy_old_tractor.png'
+      image: `${import.meta.env.BASE_URL}images/services/buy_old_tractor.png`
     },
     { 
       title: 'Sell Old Tractor', 
-      image: '/images/services/sell_old_tractor.png'
+      image: `${import.meta.env.BASE_URL}images/services/sell_old_tractor.png`
     },
     { 
       title: 'Buy Tractor Insurance', 
-      image: '/images/services/tractor_insurance.png'
+      image: `${import.meta.env.BASE_URL}images/services/tractor_insurance.png`
     },
     { 
       title: 'Tractor Loan', 
-      image: '/images/services/tractor_loan.png'
+      image: `${import.meta.env.BASE_URL}images/services/tractor_loan.png`
     },
     { 
       title: 'Tractor Service Kit', 
-      image: '/images/services/tractor_service.png'
+      image: `${import.meta.env.BASE_URL}images/services/tractor_service.png`
     },
     { 
       title: 'Tractor News', 
-      image: '/images/services/tractor_news.png'
+      image: `${import.meta.env.BASE_URL}images/services/tractor_news.png`
     },
   ];
 

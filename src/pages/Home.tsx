@@ -5,36 +5,36 @@ import EMICalculator from '../components/EMICalculator';
 export default function Home() {
 
   const services = [
-    { title: 'Buy Old Tractor', image: '/images/services/buy_old_tractor.png' },
-    { title: 'Sell Old Tractor', image: '/images/services/sell_old_tractor.png' },
-    { title: 'Buy Tractor Insurance', image: '/images/services/tractor_insurance.png' },
-    { title: 'Tractor Loan', image: '/images/services/tractor_loan.png' },
-    { title: 'Tractor Service Kit', image: '/images/services/tractor_service.png' },
-    { title: 'Tractor News', image: '/images/services/tractor_news.png' },
+    { title: 'Buy Old Tractor', image: `${import.meta.env.BASE_URL}images/services/buy_old_tractor.png` },
+    { title: 'Sell Old Tractor', image: `${import.meta.env.BASE_URL}images/services/sell_old_tractor.png` },
+    { title: 'Buy Tractor Insurance', image: `${import.meta.env.BASE_URL}images/services/tractor_insurance.png` },
+    { title: 'Tractor Loan', image: `${import.meta.env.BASE_URL}images/services/tractor_loan.png` },
+    { title: 'Tractor Service Kit', image: `${import.meta.env.BASE_URL}images/services/tractor_service.png` },
+    { title: 'Tractor News', image: `${import.meta.env.BASE_URL}images/services/tractor_news.png` },
   ];
 
   const brands = [
-    { name: 'New Holland', bgPos: '0% 0%', count: 12, image: '/New-Holland-Logo.png' },
-    { name: 'John Deere', bgPos: '25% 0%', count: 8, image: '/36895aac77d66defd7b40e40254f929d.jpg' },
-    { name: 'Mahindra', bgPos: '50% 0%', count: 5, image: '/Mahindra_Auto.png' },
-    { name: 'Escorts', bgPos: '75% 0%', count: 4, image: '/Escorts.webp' },
-    { name: 'Eicher', bgPos: '100% 0%', count: 7, image: '/Eicher-Logo-Font.webp' },
-    { name: 'Swaraj', bgPos: '25% 33.33%', count: 15, image: '/Swaraj-Logo.png' },
-    { name: 'Sonalika', bgPos: '50% 33.33%', count: 9, image: '/sonalika-international-logo-png_seeklogo-304150.png' },
-    { name: 'Kubota', bgPos: '0% 66.66%', count: 2, image: '/Kubota-logo.png' },
-    { name: 'Force Motors', bgPos: '0% 100%', count: 1, image: '/Force_Motors-Logo.wine.png' },
-    { name: 'Indo Farm', bgPos: '50% 66.66%', count: 3, image: '/r040alevqyklbif9gwex.avif' },
+    { name: 'New Holland', bgPos: '0% 0%', count: 12, image: `${import.meta.env.BASE_URL}New-Holland-Logo.png` },
+    { name: 'John Deere', bgPos: '25% 0%', count: 8, image: `${import.meta.env.BASE_URL}36895aac77d66defd7b40e40254f929d.jpg` },
+    { name: 'Mahindra', bgPos: '50% 0%', count: 5, image: `${import.meta.env.BASE_URL}Mahindra_Auto.png` },
+    { name: 'Escorts', bgPos: '75% 0%', count: 4, image: `${import.meta.env.BASE_URL}Escorts.webp` },
+    { name: 'Eicher', bgPos: '100% 0%', count: 7, image: `${import.meta.env.BASE_URL}Eicher-Logo-Font.webp` },
+    { name: 'Swaraj', bgPos: '25% 33.33%', count: 15, image: `${import.meta.env.BASE_URL}Swaraj-Logo.png` },
+    { name: 'Sonalika', bgPos: '50% 33.33%', count: 9, image: `${import.meta.env.BASE_URL}sonalika-international-logo-png_seeklogo-304150.png` },
+    { name: 'Kubota', bgPos: '0% 66.66%', count: 2, image: `${import.meta.env.BASE_URL}Kubota-logo.png` },
+    { name: 'Force Motors', bgPos: '0% 100%', count: 1, image: `${import.meta.env.BASE_URL}Force_Motors-Logo.wine.png` },
+    { name: 'Indo Farm', bgPos: '50% 66.66%', count: 3, image: `${import.meta.env.BASE_URL}r040alevqyklbif9gwex.avif` },
   ];
 
   const usedTractors = [
-    { name: 'New Holland 3037 NX', price: '1,80,000', oldPrice: '2,00,000', hours: '5500', hp: '39', loc: 'Gwalior', img: '/New Holland 3037 NX.jpg' },
-    { name: 'Massey 1035', price: '2,50,000', oldPrice: '2,75,000', hours: '3200', hp: '35', loc: 'Gwalior', img: '/Massey 1035.jpg' },
-    { name: 'Swaraj 735 FE', price: '3,90,000', oldPrice: '4,00,000', hours: '2200', hp: '39', loc: 'Gwalior', img: '/Swaraj 735 FE.webp' },
-    { name: 'MAHINDRA 265 D', price: '4,00,000', oldPrice: '4,10,000', hours: '850', hp: '35', loc: 'Gwalior', img: '/MAHINDRA 265 D.webp' },
-    { name: 'New Holland 3037 NX', price: '4,45,000', oldPrice: '4,65,000', hours: '250', hp: '39', loc: 'Gwalior', img: '/New Holland 3037 NX 1.jpg' },
-    { name: 'Mahindra 275 Di', price: '3,95,000', oldPrice: '4,25,000', hours: '2800', hp: '39', loc: 'Gwalior', img: '/Mahindra 275 Di.webp' },
-    { name: 'New Holland 3032 Nx', price: '4,25,000', oldPrice: '4,45,000', hours: '350', hp: '35', loc: 'Gwalior', img: '/New Holland 3032 Nx.jpg' },
-    { name: 'Massey Ferguson 7250', price: '2,20,000', oldPrice: '2,50,000', hours: '3450', hp: '50', loc: 'Gwalior', img: '/Massey Ferguson 7250.jpeg' }
+    { name: 'New Holland 3037 NX', price: '1,80,000', oldPrice: '2,00,000', hours: '5500', hp: '39', loc: 'Gwalior', img: `${import.meta.env.BASE_URL}New Holland 3037 NX.jpg` },
+    { name: 'Massey 1035', price: '2,50,000', oldPrice: '2,75,000', hours: '3200', hp: '35', loc: 'Gwalior', img: `${import.meta.env.BASE_URL}Massey 1035.jpg` },
+    { name: 'Swaraj 735 FE', price: '3,90,000', oldPrice: '4,00,000', hours: '2200', hp: '39', loc: 'Gwalior', img: `${import.meta.env.BASE_URL}Swaraj 735 FE.webp` },
+    { name: 'MAHINDRA 265 D', price: '4,00,000', oldPrice: '4,10,000', hours: '850', hp: '35', loc: 'Gwalior', img: `${import.meta.env.BASE_URL}MAHINDRA 265 D.webp` },
+    { name: 'New Holland 3037 NX', price: '4,45,000', oldPrice: '4,65,000', hours: '250', hp: '39', loc: 'Gwalior', img: `${import.meta.env.BASE_URL}New Holland 3037 NX 1.jpg` },
+    { name: 'Mahindra 275 Di', price: '3,95,000', oldPrice: '4,25,000', hours: '2800', hp: '39', loc: 'Gwalior', img: `${import.meta.env.BASE_URL}Mahindra 275 Di.webp` },
+    { name: 'New Holland 3032 Nx', price: '4,25,000', oldPrice: '4,45,000', hours: '350', hp: '35', loc: 'Gwalior', img: `${import.meta.env.BASE_URL}New Holland 3032 Nx.jpg` },
+    { name: 'Massey Ferguson 7250', price: '2,20,000', oldPrice: '2,50,000', hours: '3450', hp: '50', loc: 'Gwalior', img: `${import.meta.env.BASE_URL}Massey Ferguson 7250.jpeg` }
   ];
 
   const features = [
@@ -63,7 +63,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="w-full bg-[#0d1310]">
         <img 
-          src="/banner.png" 
+          src={`${import.meta.env.BASE_URL}banner.png`} 
           alt="MB Tractors" 
           className="w-full h-auto object-contain block"
         />
@@ -251,7 +251,7 @@ export default function Home() {
             ].map((img, i) => (
               <div key={i} className="group relative overflow-hidden rounded-2xl shadow-lg aspect-w-4 aspect-h-3 cursor-pointer">
                 <img 
-                  src={`/images/${img}`} 
+                  src={`${import.meta.env.BASE_URL}images/${img}`} 
                   alt={`Sold Tractor ${i+1}`} 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />

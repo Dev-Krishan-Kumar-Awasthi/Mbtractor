@@ -9,7 +9,7 @@ export default function Footer() {
           
           <div className="col-span-1 md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4 group">
-              <img src="/logo.png" alt="MB Tractors Logo" className="h-12 w-auto object-contain brightness-0 invert transition-transform group-hover:scale-105" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="MB Tractors Logo" className="h-12 w-auto object-contain brightness-0 invert transition-transform group-hover:scale-105" />
               <div className="flex flex-col leading-tight">
                 <span className="text-lg font-black text-white tracking-tighter">MB TRACTORS</span>
                 <span className="text-[10px] font-bold text-saffron-gold uppercase tracking-[0.2em]">Powered By MB Finance</span>
