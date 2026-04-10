@@ -10,10 +10,12 @@ import Contact from './pages/Contact';
 import EMICalculator from './components/EMICalculator';
 import LeadPopup from './components/LeadPopup';
 import BackHomeButton from './components/BackHomeButton';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
     <div className="min-h-screen flex flex-col font-sans">
+      <ScrollToTop />
       <Navbar />
       <BackHomeButton />
       <LeadPopup />
