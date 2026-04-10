@@ -72,6 +72,17 @@ export default function Footer() {
         
         <div className="border-t border-gray-700 pt-8 mt-8 text-center text-sm text-gray-400">
           <p>&copy; {new Date().getFullYear()} MB Tractors Powered by MB Finance. All rights reserved.</p>
+          <p className="mt-2">
+            Design and Developed by{" "}
+            <a 
+              href="https://kkawasthi.vercel.app/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-saffron-gold hover:text-white transition-colors font-bold"
+            >
+              Krishan Kumar Awasthi
+            </a>
+          </p>
         </div>
       </div>
     </footer>

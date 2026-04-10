@@ -57,6 +57,9 @@ export default function Home() {
 
   return (
     <div className="w-full">
+      {/* SEO H1 - Visually hidden but readable by search engines */}
+      <h1 className="sr-only">MB Tractor Powered by MB Finance Shivpuri | Best Tractor Loans and Vehicle Financing India</h1>
+      
       {/* Hero Section */}
       <section className="w-full bg-[#0d1310]">
         <img 
