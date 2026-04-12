@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Camera, Upload, CheckCircle } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Camera, Upload, CheckCircle, X, Paperclip } from 'lucide-react';
 
 export default function ValuationForm() {
   const [formData, setFormData] = useState({
@@ -10,27 +10,59 @@ export default function ValuationForm() {
     year: '',
     hoursKms: ''
   });
+  const [images, setImages] = useState<{ file: File, preview: string }[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormData(prev => ({ ...prev, [id || e.target.name]: value }));
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const newImages = Array.from(files).slice(0, 3 - images.length).map(file => ({
+      file,
+      preview: URL.createObjectURL(file)
+    }));
+
+    setImages(prev => [...prev, ...newImages]);
+    
+    // Reset input so the same file can be selected again if removed
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const removeImage = (index: number) => {
+    setImages(prev => {
+      const newImages = [...prev];
+      URL.revokeObjectURL(newImages[index].preview);
+      newImages.splice(index, 1);
+      return newImages;
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Construct WhatsApp Message
-    const message = `*Used Vehicle Valuation Request*%0A%0A` +
-      `*Name:* ${formData.fullName}%0A` +
-      `*Phone:* ${formData.phone}%0A` +
-      `*Vehicle:* ${formData.vehicleType}%0A` +
-      `*Make & Model:* ${formData.makeModel}%0A` +
-      `*Year:* ${formData.year}%0A` +
-      `*Usage:* ${formData.hoursKms} (Hrs/KMs)%0A%0A` +
-      `Sent from MB Tractors Website`;
+    const photoCount = images.length;
+    const photoInstruction = photoCount > 0 
+      ? `%0A%0A*⚠️ ACTION REQUIRED:*%0AI have selected *${photoCount} photos* for valuation. I am attaching them below this message. 👇`
+      : '';
 
-    const whatsappUrl = `https://wa.me/917470655510?text=${message}`;
+    // Construct WhatsApp Message
+    const rawMessage = `*Used Vehicle Valuation Request*\n\n` +
+      `*Name:* ${formData.fullName}\n` +
+      `*Phone:* ${formData.phone}\n` +
+      `*Vehicle:* ${formData.vehicleType}\n` +
+      `*Make & Model:* ${formData.makeModel}\n` +
+      `*Year:* ${formData.year}\n` +
+      `*Usage:* ${formData.hoursKms} (Hrs/KMs)` + 
+      (images.length > 0 ? `\n\n*⚠️ ACTION REQUIRED:*\nI have selected *${images.length} photos* for valuation. I am attaching them below this message. 👇` : '') + 
+      `\n\n_Sent from MB Tractors Website_`;
+
+    const whatsappUrl = `https://wa.me/917470655510?text=${encodeURIComponent(rawMessage)}`;
     
     setSubmitted(true);
     window.open(whatsappUrl, '_blank');
@@ -38,15 +70,31 @@ export default function ValuationForm() {
 
   if (submitted) {
     return (
-      <div className="glass p-10 rounded-2xl w-full max-w-2xl mx-auto text-center flex flex-col items-center justify-center min-h-[400px] text-left">
-        <CheckCircle className="h-20 w-20 text-forest-green mb-4" />
-        <h3 className="text-3xl font-bold text-forest-green-dark mb-4">Request Submitted Successfully!</h3>
-        <p className="text-gray-600 font-medium text-lg">
-          Opening WhatsApp for the final step... Our team will review the details shortly. 😊
+      <div className="glass p-10 rounded-2xl w-full max-w-2xl mx-auto text-center flex flex-col items-center justify-center min-h-[450px]">
+        <div className="bg-green-100 p-4 rounded-full mb-6">
+          <CheckCircle className="h-16 w-16 text-forest-green" />
+        </div>
+        <h3 className="text-3xl font-bold text-forest-green-dark mb-4">Almost Done!</h3>
+        <p className="text-gray-600 font-medium text-lg mb-8 max-w-md">
+          We've opened WhatsApp for you. 
+          <span className="block mt-4 text-forest-green font-bold flex items-center justify-center gap-2">
+            <Paperclip className="h-5 w-5" /> 
+            Final Step: Please attach the {images.length > 0 ? images.length : ''} photos you selected in the WhatsApp chat.
+          </span>
         </p>
+        
+        <div className="bg-saffron-gold/10 border border-saffron-gold/30 p-4 rounded-xl mb-8 animate-pulse">
+          <p className="text-sm text-amber-800 font-semibold">
+            Tip: Click the attachment icon (📎) in WhatsApp to send your photos!
+          </p>
+        </div>
+
         <button 
-          onClick={() => setSubmitted(false)}
-          className="mt-8 text-forest-green font-bold underline hover:text-forest-green-light"
+          onClick={() => {
+            setSubmitted(false);
+            setImages([]);
+          }}
+          className="text-forest-green font-bold underline hover:text-forest-green-light transition-colors"
         >
           Submit another vehicle
         </button>
@@ -72,7 +120,7 @@ export default function ValuationForm() {
               value={formData.fullName}
               onChange={handleChange}
               placeholder="Rahul Yadav" 
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none transition-all" 
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none transition-all hover:border-forest-green/50" 
             />
           </div>
           <div className="space-y-2">
@@ -84,7 +132,7 @@ export default function ValuationForm() {
               value={formData.phone}
               onChange={handleChange}
               placeholder="+91 9876543210" 
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none transition-all" 
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none transition-all hover:border-forest-green/50" 
             />
           </div>
         </div>
@@ -98,7 +146,7 @@ export default function ValuationForm() {
               name="vehicleType"
               value={formData.vehicleType}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none bg-white"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none bg-white cursor-pointer hover:border-forest-green/50"
             >
               <option value="">Select a type...</option>
               <option value="tractor">Tractor</option>
@@ -117,7 +165,7 @@ export default function ValuationForm() {
               value={formData.makeModel}
               onChange={handleChange}
               placeholder="e.g. Mahindra 575 DI" 
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none transition-all" 
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none transition-all hover:border-forest-green/50" 
             />
           </div>
         </div>
@@ -134,7 +182,7 @@ export default function ValuationForm() {
               value={formData.year}
               onChange={handleChange}
               placeholder="2018" 
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none transition-all" 
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none transition-all hover:border-forest-green/50" 
             />
           </div>
           <div className="space-y-2">
@@ -145,30 +193,73 @@ export default function ValuationForm() {
               value={formData.hoursKms}
               onChange={handleChange}
               placeholder="5000" 
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none transition-all" 
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-forest-green focus:border-transparent outline-none transition-all hover:border-forest-green/50" 
             />
           </div>
         </div>
 
-        <div className="space-y-2 pt-2">
+        <div className="space-y-4 pt-2">
           <label className="text-sm font-semibold text-gray-700 flex justify-between items-center">
             <span>Upload Photos (Optional but recommended)</span>
-            <span className="text-xs text-gray-500">Max 3 photos</span>
+            <span className={`text-xs ${images.length >= 3 ? 'text-red-500 font-bold' : 'text-gray-500'}`}>
+              {images.length}/3 photos
+            </span>
           </label>
-          <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-50 hover:border-forest-green transition-all cursor-pointer group group-hover:bg-green-50">
-            <input type="file" multiple accept="image/*" className="hidden" id="photo-upload" />
-            <label htmlFor="photo-upload" className="cursor-pointer flex flex-col items-center justify-center">
-              <Camera className="h-10 w-10 text-gray-400 group-hover:text-forest-green mb-3 transition-colors" />
-              <span className="text-forest-green font-medium underline mb-1">Click to upload</span>
-              <span className="text-xs text-gray-500">or drag and drop images here</span>
-              <span className="text-xs text-gray-400 mt-2">JPG, PNG format (Max 5MB per image)</span>
-            </label>
-          </div>
+          
+          {/* Upload Box */}
+          {images.length < 3 && (
+            <div 
+              onClick={() => fileInputRef.current?.click()}
+              className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-forest-green/5 hover:border-forest-green transition-all cursor-pointer group"
+            >
+              <input 
+                ref={fileInputRef}
+                type="file" 
+                multiple 
+                accept="image/*" 
+                className="hidden" 
+                onChange={handleImageChange}
+              />
+              <div className="flex flex-col items-center justify-center">
+                <Camera className="h-10 w-10 text-gray-400 group-hover:text-forest-green mb-2 transition-colors" />
+                <span className="text-forest-green font-semibold underline mb-1">Click to upload</span>
+                <span className="text-xs text-gray-500 leading-relaxed">
+                  Select up to 3 photos of your vehicle<br/>
+                  JPG, PNG format (Max 5MB each)
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Previews Grid */}
+          {images.length > 0 && (
+            <div className="grid grid-cols-3 gap-4 mt-4">
+              {images.map((img, idx) => (
+                <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 shadow-sm group">
+                  <img 
+                    src={img.preview} 
+                    alt={`Preview ${idx + 1}`} 
+                    className="w-full h-full object-cover"
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => removeImage(idx)}
+                    className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        <button type="submit" className="btn-secondary w-full text-lg mt-4 flex items-center justify-center gap-2 py-4">
+        <button 
+          type="submit" 
+          className="btn-secondary w-full text-lg mt-4 flex items-center justify-center gap-2 py-4 shadow-xl hover:shadow-forest-green/20"
+        >
           <Upload size={20} />
-          Submit for Valuation
+          {images.length > 0 ? `Submit & Send ${images.length} Photos` : 'Submit for Valuation'}
         </button>
       </form>
     </div>

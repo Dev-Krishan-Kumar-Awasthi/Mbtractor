@@ -9,19 +9,24 @@ export default function Footer() {
           
           <div className="col-span-1 md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4 group">
-              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="MB Tractors Logo" className="h-12 w-auto object-contain brightness-0 invert transition-transform group-hover:scale-105" />
+              <img src={`${import.meta.env.BASE_URL}logo.jpg`} alt="MB Tractors Logo" className="h-12 w-auto object-contain transition-transform group-hover:scale-105" />
               <div className="flex flex-col leading-tight">
                 <span className="text-lg font-black text-white tracking-tighter">MB TRACTORS</span>
-                <span className="text-[10px] font-bold text-saffron-gold uppercase tracking-[0.2em]">Powered By MB Finance</span>
+                <span className="text-[10px] font-bold text-saffron-gold uppercase tracking-[0.2em]">POWERED BY MB FINANCE</span>
               </div>
             </Link>
             <p className="text-gray-300 text-sm mb-4">
               Your trusted partner for tractor and vehicle financing in Shivpuri. Founded by Maneesh Lodhi in Oct 2023.
             </p>
-            <div className="flex space-x-4">
-              <a href="https://www.facebook.com/people/MB-Finance-Service-Shivpuri/61552727040737/" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-saffron-gold transition-colors font-bold text-sm">Facebook</a>
-              <a href="https://www.instagram.com/mb_finance_service_?igsh=MWxmdmtscHRwM3hqbQ==" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-saffron-gold transition-colors font-bold text-sm">Instagram</a>
-
+            <div className="flex space-x-6">
+              <a href="https://www.facebook.com/people/MB-Finance-Service-Shivpuri/61552727040737/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-gray-300 hover:text-saffron-gold transition-colors font-bold text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                Facebook
+              </a>
+              <a href="https://www.instagram.com/mb_finance_service_?igsh=MWxmdmtscHRwM3hqbQ==" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-gray-300 hover:text-saffron-gold transition-colors font-bold text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                Instagram
+              </a>
             </div>
           </div>
 
@@ -71,7 +76,7 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-gray-700 pt-8 mt-8 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} MB Tractors Powered by MB Finance. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} MB Tractor and MB Finance. All rights reserved.</p>
           <p className="mt-2">
             Design and Developed by{" "}
             <a 
