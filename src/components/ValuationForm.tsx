@@ -46,11 +46,6 @@ export default function ValuationForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const photoCount = images.length;
-    const photoInstruction = photoCount > 0 
-      ? `%0A%0A*⚠️ ACTION REQUIRED:*%0AI have selected *${photoCount} photos* for valuation. I am attaching them below this message. 👇`
-      : '';
-
     // Construct WhatsApp Message
     const rawMessage = `*Used Vehicle Valuation Request*\n\n` +
       `*Name:* ${formData.fullName}\n` +
