@@ -1,174 +1,188 @@
 import { useState, useMemo } from 'react';
-import { IndianRupee, Calendar } from 'lucide-react';
-
-type Frequency = 'monthly' | 'semi-annual';
+import { IndianRupee, Clock, Landmark, AlertCircle, TrendingDown, Wallet, Calendar } from 'lucide-react';
 
 export default function EMICalculator() {
-  const [loanAmount, setLoanAmount] = useState<number>(500000);
-  const [interestRate, setInterestRate] = useState<number>(9.5);
+  const [totalPrice, setTotalPrice] = useState<number>(1000000); // Ex: Tractor Price
+  const [downPayment, setDownPayment] = useState<number>(200000);
+  const [interestRate, setInterestRate] = useState<number>(12);
   const [tenureYears, setTenureYears] = useState<number>(3);
-  const [frequency, setFrequency] = useState<Frequency>('monthly');
+  const [intervalMonths, setIntervalMonths] = useState<number>(1); // "Har kitne mahine mein"
 
-  // EMI Calculation Logic: P x R x (1+R)^N / [(1+R)^N-1]
-  // P = Principal loan amount
-  // R = Rate of interest per period
-  // N = Total number of installments (periods)
-  const calculateEMI = useMemo(() => {
-    const P = loanAmount;
-    const isMonthly = frequency === 'monthly';
-    const R = isMonthly ? (interestRate / 12) / 100 : (interestRate / 2) / 100;
-    const N = isMonthly ? tenureYears * 12 : tenureYears * 2;
+  const calculation = useMemo(() => {
+    const P = totalPrice - downPayment;
+    const annualRate = interestRate;
+    const years = tenureYears;
+    const iMonths = intervalMonths;
 
-    if (P === 0 || R === 0 || N === 0) return 0;
+    // Error and Edge Case Handling
+    if (P <= 0 || annualRate <= 0 || years <= 0 || years > 7 || iMonths <= 0) {
+      return { 
+        installment: 0, 
+        totalInterest: 0, 
+        totalPayable: 0, 
+        installmentsCount: 0, 
+        error: years > 7 ? "Maximum tenure is 7 years." : iMonths <= 0 ? "Interval must be > 0" : "" 
+      };
+    }
+
+    // High Precision Internal Calculation (Reducing Balance)
+    // Custom Frequency per Year = 12 / IntervalMonths
+    const f = 12 / iMonths;
+    const r = annualRate / (f * 100);
+    const n = years * f;
+
+    // Formula: E = P * r * (1+r)^n / ((1+r)^n - 1)
+    const factor = Math.pow(1 + r, n);
+    const installment = P * r * (factor / (factor - 1));
     
-    const emi = (P * R * Math.pow(1 + R, N)) / (Math.pow(1 + R, N) - 1);
-    return Math.round(emi);
-  }, [loanAmount, interestRate, tenureYears, frequency]);
+    const totalPayable = installment * n;
+    const totalInterest = totalPayable - P;
 
-  const totalInstallments = frequency === 'monthly' ? tenureYears * 12 : tenureYears * 2;
-  const totalPayment = calculateEMI * totalInstallments;
-  const totalInterest = totalPayment - loanAmount;
+    return {
+      installment: Number(installment.toFixed(2)),
+      totalInterest: Number(totalInterest.toFixed(2)),
+      totalPayable: Number(totalPayable.toFixed(2)),
+      installmentsCount: n,
+      error: ""
+    };
+  }, [totalPrice, downPayment, interestRate, tenureYears, intervalMonths]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
-      maximumFractionDigits: 0,
+      maximumFractionDigits: 2,
     }).format(amount);
   };
 
   return (
-    <div className="glass p-8 rounded-2xl w-full max-w-4xl mx-auto shadow-2xl border border-white/20">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-black text-forest-green-dark mb-2 tracking-tight">Finance Calculator</h2>
-        <p className="text-gray-600 font-medium">Get an instant estimate for your tractor loan repayment.</p>
-      </div>
-
-      {/* Frequency Toggle */}
-      <div className="flex justify-center mb-10">
-        <div className="bg-gray-100 p-1.5 rounded-xl flex gap-1 shadow-inner border border-gray-200">
-          <button 
-            onClick={() => setFrequency('monthly')}
-            className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${frequency === 'monthly' ? 'bg-forest-green text-white shadow-md' : 'text-gray-500 hover:text-forest-green'}`}
-          >
-            Monthly EMI
-          </button>
-          <button 
-            onClick={() => setFrequency('semi-annual')}
-            className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${frequency === 'semi-annual' ? 'bg-saffron-gold text-forest-green-dark shadow-md' : 'text-gray-500 hover:text-saffron-gold'}`}
-          >
-            <Calendar size={16} />
-            6-Month (Kisan EMI)
-          </button>
+    <div className="glass p-5 md:p-8 rounded-[2rem] w-full max-w-4xl mx-auto shadow-xl border border-white/20 backdrop-blur-md relative overflow-hidden text-gray-800">
+      {/* Space Saving Header */}
+      <div className="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
+        <h2 className="text-xl md:text-2xl font-black text-forest-green-dark flex items-center gap-2">
+          <Landmark size={20} className="text-saffron-gold" />
+          Tractor Finance <span className="text-saffron-gold">EMI</span>
+        </h2>
+        <div className="bg-forest-green/10 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-forest-green flex items-center gap-1">
+          <TrendingDown size={12} />
+          Reducing Balance
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Sliders Section */}
-        <div className="space-y-8">
-          <div>
-            <div className="flex justify-between mb-2">
-              <label className="font-bold text-gray-700">Loan Amount</label>
-              <span className="font-black text-forest-green-dark bg-green-50 px-3 py-1 rounded-md border border-green-100">
-                {formatCurrency(loanAmount)}
-              </span>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Compact Inputs Grid */}
+        <div className="lg:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Row 1: Amount and Down Payment */}
+          <div className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+            <div className="flex justify-between items-center mb-3">
+              <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Tractor Price (₹)</label>
+              <input 
+                type="number" 
+                value={totalPrice} 
+                onChange={(e) => setTotalPrice(Number(e.target.value))}
+                className="w-28 text-right bg-white border border-gray-200 rounded-lg px-2 py-1 font-black text-forest-green-dark focus:border-forest-green outline-none"
+              />
             </div>
-            <input
-              type="range"
-              min="50000"
-              max="2000000"
-              step="10000"
-              value={loanAmount}
-              onChange={(e) => setLoanAmount(Number(e.target.value))}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-forest-green"
-            />
-            <div className="flex justify-between text-xs font-bold text-gray-400 mt-1">
-              <span>₹50,000</span>
-              <span>₹20,00,000</span>
-            </div>
+            <input type="range" min="100000" max="5000000" step="10000" value={totalPrice} onChange={(e) => setTotalPrice(Number(e.target.value))} className="w-full h-1.5 accent-forest-green" />
           </div>
 
-          <div>
-            <div className="flex justify-between mb-2">
-              <label className="font-bold text-gray-700">Interest Rate (% p.a.)</label>
-              <span className="font-black text-forest-green-dark bg-green-50 px-3 py-1 rounded-md border border-green-100">
-                {interestRate}%
-              </span>
+          <div className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+            <div className="flex justify-between items-center mb-3">
+              <label className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1"><Wallet size={12}/> Down Payment (₹)</label>
+              <input 
+                type="number" 
+                value={downPayment} 
+                onChange={(e) => setDownPayment(Number(e.target.value))}
+                className="w-28 text-right bg-white border border-gray-200 rounded-lg px-2 py-1 font-black text-forest-green-dark focus:border-forest-green outline-none"
+              />
             </div>
-            <input
-              type="range"
-              min="7"
-              max="15"
-              step="0.1"
-              value={interestRate}
-              onChange={(e) => setInterestRate(Number(e.target.value))}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-forest-green"
-            />
-            <div className="flex justify-between text-xs font-bold text-gray-400 mt-1">
-              <span>7%</span>
-              <span>15%</span>
-            </div>
+            <input type="range" min="0" max={totalPrice} step="5000" value={downPayment} onChange={(e) => setDownPayment(Number(e.target.value))} className="w-full h-1.5 accent-saffron-gold" />
           </div>
 
-          <div>
-            <div className="flex justify-between mb-2">
-              <label className="font-bold text-gray-700">Loan Tenure (Years)</label>
-              <span className="font-black text-forest-green-dark bg-green-50 px-3 py-1 rounded-md border border-green-100">
-                {tenureYears} Years
-              </span>
+          {/* Row 2: Rate, Tenure, Frequency */}
+          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+              <label className="text-[10px] font-black text-gray-400 uppercase mb-2 block tracking-widest">Rate (% p.a.)</label>
+              <div className="flex items-center gap-2">
+                <input type="number" step="0.1" value={interestRate} onChange={(e) => setInterestRate(Number(e.target.value))} className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 font-bold text-forest-green-dark" />
+              </div>
             </div>
-            <input
-              type="range"
-              min="1"
-              max="5"
-              step="1"
-              value={tenureYears}
-              onChange={(e) => setTenureYears(Number(e.target.value))}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-forest-green"
-            />
-            <div className="flex justify-between text-xs font-bold text-gray-400 mt-1">
-              <span>1 Year</span>
-              <span>5 Years</span>
+
+            <div className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 relative">
+              <label className="text-[10px] font-black text-gray-400 uppercase mb-2 block tracking-widest leading-none">Tenure (Years)</label>
+              <div className="relative">
+                <input type="number" min="1" max="10" value={tenureYears} onChange={(e) => setTenureYears(Number(e.target.value))} className={`w-full bg-white border border-gray-200 rounded-lg px-3 py-2 font-black text-lg outline-none focus:border-forest-green ${tenureYears > 7 ? 'text-red-500 border-red-200' : 'text-forest-green-dark'}`} />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">Yrs</span>
+              </div>
+              {calculation.error && tenureYears > 7 && (
+                <div className="absolute -bottom-6 left-0 text-[10px] font-black text-red-500 flex items-center gap-1">
+                  <AlertCircle size={10} /> {calculation.error}
+                </div>
+              )}
+            </div>
+
+            <div className="bg-white p-4 rounded-2xl border-2 border-forest-green/20 relative shadow-sm hover:shadow-md transition-all">
+              <label className="text-[10px] font-black text-forest-green uppercase mb-2 block tracking-widest leading-none">Har [X] Mahine mein</label>
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                   <input 
+                    type="number" 
+                    min="1" 
+                    max="12"
+                    value={intervalMonths} 
+                    onChange={(e) => setIntervalMonths(Number(e.target.value))}
+                    className="w-full bg-forest-green/5 border border-forest-green/10 rounded-lg px-3 py-2 font-black text-2xl text-forest-green-dark outline-none focus:bg-white focus:border-forest-green"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-black text-forest-green/40 uppercase">Months</span>
+                </div>
+                <div className="w-8 h-8 rounded-lg bg-saffron-gold/10 flex items-center justify-center text-saffron-gold">
+                  <Clock size={16} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Results Section */}
-        <div className="bg-forest-green p-8 rounded-2xl text-white shadow-xl flex flex-col justify-between border border-white/10 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-saffron-gold opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity"></div>
-          
-          <div className="relative z-10">
-            <h3 className="text-xl font-bold mb-6 text-saffron-gold border-b border-white/20 pb-2 flex justify-between items-center">
-              <span>Repayment Details</span>
-              <span className="text-[10px] uppercase tracking-widest bg-white/10 px-2 py-0.5 rounded">Shivpuri Edition</span>
-            </h3>
+        {/* Highlighted Results Card */}
+        <div className="lg:col-span-12 mt-4">
+          <div className="bg-forest-green-dark p-6 rounded-3xl text-white shadow-lg relative overflow-hidden group">
+            {/* Visual Flare */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-saffron-gold/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
             
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-300 font-medium">Principal Amount</span>
-                <span className="font-bold">{formatCurrency(loanAmount)}</span>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+              <div className="text-center md:text-left space-y-1">
+                <span className="text-saffron-gold text-[10px] font-black uppercase tracking-[0.2em] opacity-80">Aapki Installment Amount</span>
+                <div className="flex items-center justify-center md:justify-start gap-1">
+                  <span className="text-3xl font-black mt-2">₹</span>
+                  <span className="text-6xl font-black tracking-tighter tabular-nums leading-none">
+                    {new Intl.NumberFormat('en-IN').format(calculation.installment)}
+                  </span>
+                </div>
+                <div className="inline-flex items-center justify-center md:justify-start gap-2 px-3 py-1 bg-white/5 rounded-lg border border-white/10 text-[11px] font-bold text-white/60">
+                  <Calendar size={12} />
+                  <span>Har {intervalMonths} mahine mein | Kul {Math.ceil(calculation.installmentsCount)} installments</span>
+                </div>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-300 font-medium">Total Interest</span>
-                <span className="font-bold">{formatCurrency(totalInterest)}</span>
-              </div>
-              <div className="flex justify-between items-center pt-4 border-t border-white/20 mt-4">
-                <span className="text-gray-200 font-bold">Total Payable</span>
-                <span className="font-black text-2xl text-white">{formatCurrency(totalPayment)}</span>
+
+              <div className="w-full md:w-auto grid grid-cols-2 gap-4 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-10">
+                <div className="space-y-1">
+                  <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Principal Amount</p>
+                  <p className="text-lg font-black text-white">{formatCurrency(totalPrice - downPayment)}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[9px] font-black text-saffron-gold/70 uppercase tracking-widest">Total Interest</p>
+                  <p className="text-lg font-black text-saffron-gold">{formatCurrency(calculation.totalInterest)}</p>
+                </div>
+                <div className="col-span-2 pt-2 border-t border-white/5 space-y-1">
+                  <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Total Payable Amount</p>
+                  <p className="text-2xl font-black text-white">{formatCurrency(calculation.totalPayable)}</p>
+                </div>
               </div>
             </div>
           </div>
-          
-          <div className="mt-10 bg-white/10 p-5 rounded-2xl flex flex-col gap-1 border border-white/10 shadow-inner relative z-10">
-            <span className="text-sm font-bold text-saffron-gold uppercase tracking-widest">
-              {frequency === 'monthly' ? 'Estimated Monthly EMI' : '6-Month Installment (Kisan EMI)'}
-            </span>
-            <div className="flex items-center text-4xl font-black text-white">
-              <IndianRupee className="h-8 w-8 mr-1 text-saffron-gold" />
-              <span>{new Intl.NumberFormat('en-IN').format(calculateEMI)}</span>
-            </div>
-            <p className="text-[10px] text-gray-300 mt-2 italic">*Estimates based on current MP state finance norms.</p>
-          </div>
+          <p className="text-[10px] text-gray-400 text-center mt-6 italic font-medium max-w-2xl mx-auto leading-relaxed">
+            Note: Yeh calculation Reducing Balance method par aadharit hai. Har {intervalMonths} mahine ki frequency ke hisaab se interest calculate kiya gaya hai. Actual processing fees alag ho sakti hai.
+          </p>
         </div>
       </div>
     </div>
