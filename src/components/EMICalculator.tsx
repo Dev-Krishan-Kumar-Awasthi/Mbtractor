@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { IndianRupee, Clock, Landmark, AlertCircle, TrendingDown, Wallet, Calendar } from 'lucide-react';
+import { Clock, Landmark, AlertCircle, TrendingDown, Wallet, Calendar } from 'lucide-react';
 
 export default function EMICalculator() {
   const [totalPrice, setTotalPrice] = useState<number>(1000000); // Ex: Tractor Price
