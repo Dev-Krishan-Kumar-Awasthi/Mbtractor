@@ -77,15 +77,21 @@ export default function Footer() {
         
         <div className="border-t border-gray-700 pt-8 mt-8 text-center text-sm text-gray-400">
           <p>&copy; {new Date().getFullYear()} MB Tractor and MB Finance. All rights reserved.</p>
-          <p className="mt-2">
-            Design and Developed by{" "}
+          <p className="mt-2 text-xs flex items-center justify-center gap-1 flex-wrap">
+            <span>Design and Developed by</span>
             <a 
               href="https://kkawasthi.vercel.app/" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="text-saffron-gold hover:text-white transition-colors font-bold"
+              className="group inline-flex items-center gap-1.5 text-saffron-gold hover:text-white transition-all duration-300 font-extrabold tracking-tight"
             >
-              Krishan Kumar Awasthi
+              <span className="border-b border-saffron-gold/30 group-hover:border-white transition-colors pb-0.5">
+                Krishan Kumar Awasthi
+              </span>
+              <span className="text-gray-500 font-medium">&</span>
+              <span className="border-b border-saffron-gold/30 group-hover:border-white transition-colors pb-0.5">
+                Ankit Dhakad
+              </span>
             </a>
           </p>
         </div>

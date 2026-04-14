@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import ValuationForm from '../components/ValuationForm';
 
 export default function Services() {
@@ -32,12 +33,26 @@ export default function Services() {
     <div className="w-full pt-28 pb-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <h1 className="text-3xl font-bold text-forest-green-dark mb-6">Our Services</h1>
+        <motion.h1 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="text-3xl font-bold text-forest-green-dark mb-6"
+        >
+          Our Services
+        </motion.h1>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-20">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-20"
+        >
           {services.map((service, idx) => (
-            <div 
+            <motion.div 
               key={idx} 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1, duration: 0.5 }}
               className="bg-white border border-gray-400 rounded-lg p-0 overflow-hidden flex flex-col items-center justify-between h-72 hover:shadow-xl transition-all duration-300 cursor-pointer shadow-sm group"
             >
               <div className="w-full h-48 overflow-hidden">
@@ -52,9 +67,9 @@ export default function Services() {
                   {service.title}
                 </h3>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
       </div>
 

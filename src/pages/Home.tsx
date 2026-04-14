@@ -1,5 +1,6 @@
 import { ShieldCheck, Clock, CheckCircle2, MapPin, Settings } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import EMICalculator from '../components/EMICalculator';
 
 export default function Home() {
@@ -39,17 +40,17 @@ export default function Home() {
 
   const features = [
     {
-      icon: <ShieldCheck className="h-10 w-10 text-saffron-gold mb-4" />,
+      image: `${import.meta.env.BASE_URL}images/features/financing.png`,
       title: "100% Financing",
       desc: "Get full coverage on new vehicles so you can drive away worry-free."
     },
     {
-      icon: <Clock className="h-10 w-10 text-saffron-gold mb-4" />,
+      image: `${import.meta.env.BASE_URL}images/features/approvals.png`,
       title: "Fast Approvals",
       desc: "Quick documentation and lightning-fast loan approvals locally in Shivpuri."
     },
     {
-      icon: <CheckCircle2 className="h-10 w-10 text-saffron-gold mb-4" />,
+      image: `${import.meta.env.BASE_URL}images/features/tenure.png`,
       title: "Flexible Tenure",
       desc: "Choose an EMI plan that works for you, ranging securely from 3 to 5 years."
     }
@@ -86,25 +87,32 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {features.map((f, i) => (
-              <div key={i} className="p-8 rounded-2xl bg-gray-50 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                <motion.div 
-                  className="bg-forest-green/5 p-4 inline-block rounded-2xl mb-4 group-hover:bg-forest-green transition-colors"
-                  animate={{ 
-                    y: [0, -8, 0],
-                  }}
-                  transition={{ 
-                    duration: 4, 
-                    repeat: Infinity, 
-                    ease: "easeInOut",
-                    delay: i * 0.2 
-                  }}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                >
-                  <div className="group-hover:text-white transition-colors">{f.icon}</div>
-                </motion.div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{f.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{f.desc}</p>
-              </div>
+              <Link 
+                to="/contact"
+                key={i} 
+                className="p-8 pb-12 rounded-3xl bg-white border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 group flex flex-col items-start text-left cursor-pointer"
+              >
+                <div className="w-full h-44 mb-8 flex items-center justify-center p-4 bg-gray-50/50 rounded-2xl relative overflow-hidden group-hover:bg-white transition-colors duration-500">
+                  <motion.img 
+                    src={f.image} 
+                    alt={f.title} 
+                    className="max-h-full max-w-full object-contain relative z-10"
+                    animate={{ 
+                      y: [0, -6, 0],
+                    }}
+                    transition={{ 
+                      duration: 4, 
+                      repeat: Infinity, 
+                      ease: "easeInOut",
+                      delay: i * 0.3 
+                    }}
+                  />
+                  {/* Subtle background glow */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-forest-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                </div>
+                <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight">{f.title}</h3>
+                <p className="text-gray-600 leading-relaxed text-base font-medium opacity-90">{f.desc}</p>
+              </Link>
             ))}
           </div>
         </div>
@@ -121,7 +129,8 @@ export default function Home() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {services.map((service, idx) => (
-              <div 
+              <Link 
+                to="/services"
                 key={idx} 
                 className="bg-white border border-gray-400 rounded-lg p-0 overflow-hidden flex flex-col items-center justify-between h-72 hover:shadow-xl transition-all duration-300 cursor-pointer shadow-sm group"
               >
@@ -137,7 +146,7 @@ export default function Home() {
                     {service.title}
                   </h3>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -153,7 +162,8 @@ export default function Home() {
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {brands.map((brand, idx) => (
-              <div 
+              <Link 
+                to="/contact"
                 key={idx} 
                 className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center hover:shadow-md hover:border-forest-green transition-all duration-300 cursor-pointer"
               >
@@ -173,7 +183,7 @@ export default function Home() {
                   ></div>
                 )}
                 <h3 className="text-gray-800 font-bold text-sm text-center">{brand.name}</h3>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -199,7 +209,11 @@ export default function Home() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {usedTractors.map((tractor, idx) => (
-              <div key={idx} className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group cursor-pointer">
+              <Link 
+                to="/contact"
+                key={idx} 
+                className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group cursor-pointer"
+              >
                 <div className="relative h-72 overflow-hidden bg-gray-100 p-1">
                   <img src={tractor.img} alt={tractor.name} className="w-full h-full object-cover rounded shadow-[0_4px_10px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-500" />
                 </div>
@@ -231,7 +245,7 @@ export default function Home() {
                     <span className="text-xs font-bold text-gray-800 group-hover:text-emerald-600 transition-colors">Buy Now</span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
