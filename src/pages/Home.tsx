@@ -1,4 +1,4 @@
-import { ShieldCheck, Clock, CheckCircle2, MapPin, Settings } from 'lucide-react';
+import { Clock, MapPin, Settings } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import EMICalculator from '../components/EMICalculator';
