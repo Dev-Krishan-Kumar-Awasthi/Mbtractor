@@ -14,16 +14,16 @@ export default function Home() {
   ];
 
   const brands = [
-    { name: 'New Holland', bgPos: '0% 0%', count: 12, image: `${import.meta.env.BASE_URL}New-Holland-Logo.png` },
-    { name: 'John Deere', bgPos: '25% 0%', count: 8, image: `${import.meta.env.BASE_URL}36895aac77d66defd7b40e40254f929d.jpg` },
-    { name: 'Mahindra', bgPos: '50% 0%', count: 5, image: `${import.meta.env.BASE_URL}Mahindra_Auto.png` },
-    { name: 'Escorts', bgPos: '75% 0%', count: 4, image: `${import.meta.env.BASE_URL}Escorts.webp` },
-    { name: 'Eicher', bgPos: '100% 0%', count: 7, image: `${import.meta.env.BASE_URL}Eicher-Logo-Font.webp` },
-    { name: 'Swaraj', bgPos: '25% 33.33%', count: 15, image: `${import.meta.env.BASE_URL}Swaraj-Logo.png` },
-    { name: 'Sonalika', bgPos: '50% 33.33%', count: 9, image: `${import.meta.env.BASE_URL}sonalika-international-logo-png_seeklogo-304150.png` },
-    { name: 'Kubota', bgPos: '0% 66.66%', count: 2, image: `${import.meta.env.BASE_URL}Kubota-logo.png` },
-    { name: 'Force Motors', bgPos: '0% 100%', count: 1, image: `${import.meta.env.BASE_URL}Force_Motors-Logo.wine.png` },
-    { name: 'Indo Farm', bgPos: '50% 66.66%', count: 3, image: `${import.meta.env.BASE_URL}r040alevqyklbif9gwex.avif` },
+    { name: 'New Holland', bgPos: '0% 0%', image: `${import.meta.env.BASE_URL}New-Holland-Logo.png` },
+    { name: 'John Deere', bgPos: '25% 0%', image: `${import.meta.env.BASE_URL}36895aac77d66defd7b40e40254f929d.jpg` },
+    { name: 'Mahindra', bgPos: '50% 0%', image: `${import.meta.env.BASE_URL}Mahindra_Auto.png` },
+    { name: 'Escorts', bgPos: '75% 0%', image: `${import.meta.env.BASE_URL}Escorts.webp` },
+    { name: 'Eicher', bgPos: '100% 0%', image: `${import.meta.env.BASE_URL}Eicher-Logo-Font.webp` },
+    { name: 'Swaraj', bgPos: '25% 33.33%', image: `${import.meta.env.BASE_URL}Swaraj-Logo.png` },
+    { name: 'Sonalika', bgPos: '50% 33.33%', image: `${import.meta.env.BASE_URL}sonalika-international-logo-png_seeklogo-304150.png` },
+    { name: 'Kubota', bgPos: '0% 66.66%', image: `${import.meta.env.BASE_URL}Kubota-logo.png` },
+    { name: 'Force Motors', bgPos: '0% 100%', image: `${import.meta.env.BASE_URL}Force_Motors-Logo.wine.png` },
+    { name: 'Indo Farm', bgPos: '50% 66.66%', image: `${import.meta.env.BASE_URL}r040alevqyklbif9gwex.avif` },
   ];
 
   const usedTractors = [
@@ -173,7 +173,6 @@ export default function Home() {
                   ></div>
                 )}
                 <h3 className="text-gray-800 font-bold text-sm text-center">{brand.name}</h3>
-                <span className="text-gray-500 text-xs mt-1">({brand.count})</span>
               </div>
             ))}
           </div>
