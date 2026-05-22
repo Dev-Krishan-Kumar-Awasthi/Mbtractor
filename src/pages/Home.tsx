@@ -71,7 +71,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="w-full bg-[#0d1310]">
         <img 
-          src={`${import.meta.env.BASE_URL}banner.png`} 
+          src={`${import.meta.env.BASE_URL}banner.webp`} 
           alt="MB Tractors" 
           className="w-full h-auto object-contain block"
         />
