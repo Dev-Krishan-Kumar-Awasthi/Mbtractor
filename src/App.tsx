@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { ReactLenis } from '@studio-freight/react-lenis';
+import { ReactLenis } from 'lenis/react';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
